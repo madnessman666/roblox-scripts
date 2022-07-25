@@ -1,0 +1,344 @@
+local lib = {}
+
+local players = game:service('Players');
+local player = players.LocalPlayer;
+local mouse = player:GetMouse();
+local run = game:service('RunService');
+local stepped = run.Stepped;
+local tween = game:GetService("TweenService")
+local open = false
+local animininfo = TweenInfo.new(0.5,Enum.EasingStyle.Linear,Enum.EasingDirection.In,0, false,0)
+local buttonsize = UDim2.new(1, 0,0.813, 0)
+local goaloutdrop = {}
+goaloutdrop.Size = UDim2.new(1,0,0,0)
+local function CreateInstance(cls,props)
+	local inst = Instance.new(cls)
+	for i,v in pairs(props) do
+		inst[i] = v
+	end
+	return inst
+end
+local goalin = {}
+goalin.Position = UDim2.new(0,0,0.825,0)
+local goalout = {}
+goalout.Position = UDim2.new(-0.172,0,0.825,0)
+
+function Dragify(obj)
+	spawn(function()
+		local minitial;
+		local initial;
+		local isdragging;
+		obj.InputBegan:Connect(function(input)
+			if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+				isdragging = true;
+				minitial = input.Position;
+				initial = obj.Position;
+				local con;
+				con = stepped:Connect(function()
+					if isdragging then
+						local delta = Vector3.new(mouse.X, mouse.Y, 0) - minitial;
+						obj.Position = UDim2.new(initial.X.Scale, initial.X.Offset + delta.X, initial.Y.Scale, initial.Y.Offset + delta.Y);
+					else
+						con:Disconnect();
+					end;
+				end);
+				input.Changed:Connect(function()
+					if input.UserInputState == Enum.UserInputState.End then
+						isdragging = false;
+					end;
+				end);
+			end;
+		end);
+	end)
+end
+
+function lib:Window(name)
+	local ScreenGui = Instance.new("ScreenGui")
+	local Ui = Instance.new("Frame")
+	local title = Instance.new("TextLabel")
+	local Tabs = Instance.new("Frame")
+	local tabhandler = Instance.new("Frame")
+	
+	local UIListLayout = Instance.new("UIListLayout")
+	ScreenGui.Parent = game.CoreGui
+	ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Global
+
+	Ui.Name = "Ui"
+	Ui.Parent = ScreenGui
+	Ui.BackgroundColor3 = Color3.fromRGB(43, 43, 43)
+	Ui.BackgroundTransparency = 0.240
+	Ui.BorderColor3 = Color3.fromRGB(27, 42, 53)
+	Ui.Position = UDim2.new(0.363399774, -45, 0.217367992, -6)
+	Ui.Size = UDim2.new(0.414395094, 0, 0.40860334, 0)
+
+	title.Name = "title"
+	title.Parent = Ui
+	title.BackgroundColor3 = Color3.fromRGB(43, 43, 43)
+	title.Position = UDim2.new(0.0300630704, 0, 0, 0)
+	title.Size = UDim2.new(0.937288046, 0, 0.0758620724, 0)
+	title.Font = Enum.Font.SourceSans
+	title.TextColor3 = Color3.fromRGB(255, 255, 255)
+	title.TextScaled = true
+	title.TextSize = 14.000
+	title.TextWrapped = true
+	title.Text = name
+
+	Tabs.Name = "Tabs"
+	Tabs.Parent = Ui
+	Tabs.BackgroundColor3 = Color3.fromRGB(43, 43, 43)
+	Tabs.Position = UDim2.new(0.0286296234, 0, 0.0758620724, 0)
+	Tabs.Size = UDim2.new(0.244067773, 0, 0.92413801, 0)
+	
+	tabhandler.Parent = Ui
+	tabhandler.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	tabhandler.BackgroundTransparency = 1.000
+	tabhandler.Position = UDim2.new(0.289248109, 0, 0.100914061, 0)
+	tabhandler.Size = UDim2.new(0.67810297, 0, 0.868621588, 0)
+	tabhandler.Visible = true
+	tabhandler.Name = "tabhandler"
+	
+	UIListLayout.Parent = Tabs
+	UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+	UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+	UIListLayout.Padding = UDim.new(0.00999999978, 0)
+	
+	Dragify(Ui)
+	local uilibraly = {}
+	function uilibraly:Notify(text)
+	
+		local Notify = CreateInstance('Frame',{Style=Enum.FrameStyle.Custom,Active=false,AnchorPoint=Vector2.new(0, 0),BackgroundColor3=Color3.new(0.168627, 0.168627, 0.168627),BackgroundTransparency=0.23999999463558197,BorderColor3=Color3.new(0.105882, 0.164706, 0.207843),BorderSizePixel=1,ClipsDescendants=false,Draggable=false,Position=goalout.Position,Rotation=0,Selectable=false,Size=UDim2.new(0.178000003, 0, 0.173999995, 0),SizeConstraint=Enum.SizeConstraint.RelativeXY,Visible=true,ZIndex=1,Name = 'Notify',Parent = ScreenGui})
+		local title = CreateInstance('TextLabel',{Font=Enum.Font.Legacy,FontSize=Enum.FontSize.Size14,Text='Notify',TextColor3=Color3.new(1, 1, 1),TextScaled=true,TextSize=14,TextStrokeColor3=Color3.new(0, 0, 0),TextStrokeTransparency=1,TextTransparency=0,TextWrapped=true,TextXAlignment=Enum.TextXAlignment.Center,TextYAlignment=Enum.TextYAlignment.Center,Active=false,AnchorPoint=Vector2.new(0, 0),BackgroundColor3=Color3.new(0.168627, 0.168627, 0.168627),BackgroundTransparency=0.550000011920929,BorderColor3=Color3.new(0.105882, 0.164706, 0.207843),BorderSizePixel=1,ClipsDescendants=false,Draggable=false,Position=UDim2.new(0, 0, 0, 0),Rotation=0,Selectable=false,Size=UDim2.new(0.99999994, 0, 0.258836597, 0),SizeConstraint=Enum.SizeConstraint.RelativeXY,Visible=true,ZIndex=1,Name='title',Parent = Notify})
+		local TextLabel = CreateInstance('TextLabel',{Font=Enum.Font.Legacy,FontSize=Enum.FontSize.Size14,Text='Label',TextColor3=Color3.new(1, 1, 1),TextScaled=false,TextSize=14,TextStrokeColor3=Color3.new(0, 0, 0),TextStrokeTransparency=1,TextTransparency=0,TextWrapped=true,TextXAlignment=Enum.TextXAlignment.Center,TextYAlignment=Enum.TextYAlignment.Center,Active=false,AnchorPoint=Vector2.new(0, 0),BackgroundColor3=Color3.new(1, 1, 1),BackgroundTransparency=0.9800000190734863,BorderColor3=Color3.new(0.105882, 0.164706, 0.207843),BorderSizePixel=1,ClipsDescendants=false,Draggable=false,Position=UDim2.new(-0.000356949866, 0, 0.249814749, 0),Rotation=0,Selectable=false,Size=UDim2.new(1.00035691, 0, 0.74116236, 0),SizeConstraint=Enum.SizeConstraint.RelativeXY,Visible=true,ZIndex=1,Name='TextLabel',Parent = Notify})
+
+		TextLabel.Text = text
+		tween:Create(Notify, TweenInfo.new(0.5,Enum.EasingStyle.Quad,Enum.EasingDirection.In,0,false,0),goalin):Play()
+		wait(5)
+		tween:Create(Notify, TweenInfo.new(0.5,Enum.EasingStyle.Quad,Enum.EasingDirection.InOut,0,false,0),goalout):Play()
+		wait(1)
+		Notify:Destroy()
+
+
+	end
+	function uilibraly:AddTab(name)
+			local tab = Instance.new("Frame")
+			local UIListLayout = Instance.new("UIListLayout")
+			local TextButton = Instance.new("TextButton")
+			--Properties:
+
+		TextButton.Parent = Tabs
+		TextButton.Name = name
+		TextButton.TextScaled = true
+		TextButton.BackgroundColor3 = Color3.fromRGB(43,43,43)
+		TextButton.BorderColor3 = Color3.fromRGB(255,255,255)
+		TextButton.BorderSizePixel = 3
+		TextButton.Text = name
+			TextButton.Position = UDim2.new(2.11927627e-07, 0, 0, 0)
+			TextButton.Size = UDim2.new(1, 0, 0.13163349, 0)
+			TextButton.Font = Enum.Font.SourceSans
+			TextButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+			TextButton.TextSize = 14.000
+			
+			tab.Parent = tabhandler
+			tab.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			tab.BackgroundTransparency = 1.000
+			tab.Position = UDim2.new(0, 0, 0, 0)
+			tab.Size = UDim2.new(1, 0, 1.034, 0)
+		tab.Visible = false
+		tab.Name = name
+
+			UIListLayout.Parent = tab
+			UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+			UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+		UIListLayout.Padding = UDim.new(0.0299999993, 0)
+			
+			TextButton.MouseButton1Click:Connect(function()
+				for i,v in pairs(tabhandler:GetChildren())do
+					if v:IsA("Frame") then
+						v.Visible = false
+					end
+				end
+				tab.Visible = true
+		end)
+		local tabl = {}
+		function tabl:Button(name, callback)
+			local button = Instance.new("TextButton")
+			button.TextScaled = true
+			button.BackgroundColor3 = Color3.fromRGB(43,43,43)
+			button.TextColor3 = Color3.fromRGB(255,255,255)
+			button.Name = name
+			button.Text = name
+			button.Parent = tab
+			button.TextXAlignment = Enum.TextXAlignment.Left
+			button.Size = UDim2.new(1,0,0.151,0)
+			button.MouseButton1Click:Connect(callback)
+		end
+		function tabl:Toggle(name,func)
+			local functoggle = false
+			local Toggleframe = Instance.new("Frame")
+			local Togglebutt = Instance.new("TextButton")
+			local togle = Instance.new("ImageLabel")
+			local UICorner = Instance.new("UICorner")
+			local Toggle = Instance.new("ImageButton")
+			local UICorner_2 = Instance.new("UICorner")
+
+
+			Toggleframe.Name = "Toggleframe"
+			Toggleframe.BackgroundColor3 = Color3.fromRGB(43, 43, 43)
+			Toggleframe.Position = UDim2.new(0.0249949526, 0, -0.0717131495, 0)
+			Toggleframe.Size = UDim2.new(1, 0, 0.150999993, 0)
+			Toggleframe.Parent = tab
+			Toggleframe.ZIndex = 1
+
+			Togglebutt.Name = "Togglebutt"
+			Togglebutt.Text = name
+			Togglebutt.Parent = Toggleframe
+			Togglebutt.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			Togglebutt.BackgroundTransparency = 1.000
+			Togglebutt.Size = UDim2.new(0.78276968, 0, 1.00000024, 0)
+			Togglebutt.Font = Enum.Font.SourceSans
+			Togglebutt.TextColor3 = Color3.fromRGB(255, 255, 255)
+			Togglebutt.TextScaled = true
+			Togglebutt.TextSize = 14.000
+			Togglebutt.TextWrapped = true
+			Togglebutt.TextXAlignment = Enum.TextXAlignment.Left
+
+			togle.Name = "togle"
+			togle.Parent = Toggleframe
+			togle.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
+			togle.Position = UDim2.new(0.877869606, 0, 0, 0)
+			togle.Size = UDim2.new(0.0961480364, 0, 1.00000024, 0)
+
+			UICorner.CornerRadius = UDim.new(1, 0)
+			UICorner.Parent = togle
+
+			Toggle.Name = "Toggle"
+			Toggle.Parent = togle
+			Toggle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			Toggle.Position = UDim2.new(0.225254014, 0, 0.182024762, 0)
+			Toggle.Size = UDim2.new(0.586268842, 0, 0.621621609, 0)
+			Toggle.Image = "rbxassetid://0"
+			Toggle.Visible = false
+
+			UICorner_2.CornerRadius = UDim.new(1, 0)
+			UICorner_2.Parent = Toggle
+			if func then
+				functoggle = true
+			end
+			Togglebutt.MouseButton1Click:Connect(function()
+				if functoggle == true then
+					Toggle.Visible = not Toggle.Visible
+					func(Toggle.Visible)
+				end
+				if functoggle == false then
+					Toggle.Visible = not Toggle.Visible
+					print("I AM ALIVE!!!!!!!!!!!!!")
+					print(Toggle.Visible)
+				end	
+			end)
+		end
+		function tabl:Dropdown(name,obj,callback)
+
+			local Dpodown = Instance.new("TextButton")
+			local Drop = Instance.new("Frame")
+			local UIListLayout = Instance.new("UIListLayout")
+			
+			Dpodown.Name = name
+			Dpodown.Parent = tab
+			Dpodown.BackgroundColor3 = Color3.fromRGB(43, 43, 43)
+			Dpodown.Position = UDim2.new(-0.00551501196, 0, 0.322000027, 0)
+			Dpodown.Size = UDim2.new(1.00551486, 0, 0.112531967, 0)
+			Dpodown.Font = Enum.Font.SourceSans
+			Dpodown.TextColor3 = Color3.fromRGB(255, 255, 255)
+			Dpodown.TextScaled = true
+			Dpodown.TextSize = 14.000
+			Dpodown.TextWrapped = true
+			Dpodown.TextXAlignment = Enum.TextXAlignment.Left
+			Dpodown.Text = name
+
+			Drop.Name = "Drop"
+			Drop.Parent = Dpodown
+			Drop.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			Drop.Position = UDim2.new(0, 0, 1.06818187, 0)
+			Drop.Size = UDim2.new(1, 0, 1.04590952, 0)
+			Drop.ZIndex = 2
+
+			UIListLayout.Parent = Drop
+			UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+			UIListLayout.Padding = UDim.new(0.0500000007, 0)
+			for i = 1,table.getn(obj) do
+				local TextButton = Instance.new("TextButton")
+				
+				TextButton.Parent = Drop
+				TextButton.BackgroundColor3 = Color3.fromRGB(49, 49, 49)
+				TextButton.Position = UDim2.new(-9.65695577e-08, 0, 0, 0)
+				TextButton.Size = UDim2.new(0.999947667, 0, 0.966410339, 0)
+				TextButton.Font = Enum.Font.SourceSans
+				TextButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+				TextButton.TextScaled = true
+				TextButton.TextSize = 14.000
+				TextButton.Text = obj[i]
+				TextButton.TextStrokeColor3 = Color3.fromRGB(2, 2, 2)
+				TextButton.TextWrapped = true
+				TextButton.TextXAlignment = Enum.TextXAlignment.Left
+				TextButton.ZIndex = 2
+				TextButton.MouseButton1Click:Connect(function()
+					local anim = coroutine.wrap(function()
+						local animout = tween:Create(Dpodown.Drop, animininfo, goaloutdrop):Play()
+						open = false
+						wait(0.5)
+					end)
+					anim()
+					callback(TextButton.Text)
+				end)
+				end
+
+			-- Scripts:
+				for i,v in pairs(Dpodown.Drop:GetChildren())do
+					if v:IsA("TextButton") then
+						table.insert(obj,v.Name)
+						v.Visible = false
+					end
+				end
+				local x = 1
+				local y = 0
+				Dpodown.Drop.Size = UDim2.new(x,0,y,0)
+			local xe = 1
+				local ye = 0
+				local goalindrop = {}
+				ye = 0.7
+				goalindrop.Size = UDim2.new(xe,0,ye,0)
+				local animin = tween:Create(Dpodown.Drop, animininfo,goalindrop)
+			local animout = tween:Create(Dpodown.Drop, animininfo, goaloutdrop)
+			game:GetService("RunService").Stepped:Connect(function()
+				if Drop.Size.X.Scale == 1 and Drop.Size.Y.Scale == 0 then
+					for i,v in pairs(Dpodown.Drop:GetChildren())do
+						if v:IsA("TextButton") then
+							v.Size = buttonsize
+							v.Visible = false
+						end
+					end
+				end
+				if Drop.Size.X.Scale == 1 and Drop.Size.Y.Scale ~= 0 then
+					for i,v in pairs(Dpodown.Drop:GetChildren())do
+						if v:IsA("TextButton") then
+							v.Size = buttonsize
+							v.Visible = true
+						end
+					end
+				end
+			end)
+				Dpodown.MouseButton1Click:Connect(function()
+					if open ==false then
+					animin:Play()
+					end
+					if open == true then
+						animout:Play()
+					end
+					open = not open
+			end)
+			end
+		return tabl;
+	end
+	return uilibraly;
+end
+return lib;
