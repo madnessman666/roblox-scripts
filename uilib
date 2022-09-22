@@ -266,6 +266,7 @@ function lib:Window(name)
 			Toggle.Position = UDim2.new(0.225254014, 0, 0.182024762, 0)
 			Toggle.Size = UDim2.new(0.586268842, 0, 0.621621609, 0)
 			Toggle.Image = "rbxassetid://0"
+			Toggle.Visible =false
 
 			UICorner_2.CornerRadius = UDim.new(1, 0)
 			UICorner_2.Parent = Toggle
