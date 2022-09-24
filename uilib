@@ -74,7 +74,7 @@ function lib:Window(name)
 	--UIAspectRatioConstraint.Parent = Ui
 	--UIAspectRatioConstraint.AspectRatio = 2.037
 	local UIListLayout = Instance.new("UIListLayout")
-	ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+	ScreenGui.Parent = game.CoreGui
 	ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Global
 	ScreenGui.Name = "UI by jwix777"
 	local Closebutton = Instance.new("ImageButton")
